@@ -1,11 +1,12 @@
 import streamlit as st
 import time
 from datetime import datetime
+import random
 
 # Page Setup
 st.set_page_config(page_title="HBD Fariha!", page_icon="🎂")
 
-# Custom Design (Pure CSS Animations)
+# Custom Design
 st.markdown("""
     <style>
     .stApp { background-color: #ffffff; } 
@@ -14,26 +15,25 @@ st.markdown("""
         background: #f8f9fa; padding: 15px; border-radius: 15px;
         border: 2px dashed #d81b60; font-weight: bold;
     }
+    .age-fact {
+        font-size: 22px; color: #d81b60; text-align: center;
+        margin-top: 15px; font-weight: bold;
+    }
     .wish-title { font-size: 28px; color: #1e88e5; text-align: center; font-weight: bold; margin-top: 30px; }
     .pink-text { font-size: 20px; color: #ff4081; font-weight: bold; text-align: center; line-height: 1.8; }
     .blue-text { font-size: 20px; color: #1e88e5; font-weight: bold; text-align: center; line-height: 1.8; }
     
-    /* Digital Cake & Fireworks Style */
-    .cake { width: 200px; height: 150px; margin: 40px auto; position: relative; }
-    .layer { width: 200px; height: 80px; background: #ff80ab; border-radius: 50% / 20%; position: absolute; bottom: 0; box-shadow: 0 10px #f06292; }
-    .candle { width: 10px; height: 50px; background: #ffeb3b; position: absolute; bottom: 60px; left: 95px; border-radius: 5px; }
-    .flame { width: 15px; height: 25px; background: orange; position: absolute; bottom: 110px; left: 92px; border-radius: 50% 50% 35% 35%; animation: flicker 0.1s infinite; }
-    .fireworks { font-size: 50px; text-align: center; animation: burst 1.5s infinite; }
+    /* 2-Pound Cake Design */
+    .cake-container { display: flex; justify-content: center; align-items: center; flex-direction: column; margin: 50px 0; }
+    .cake { position: relative; width: 300px; height: 180px; }
+    .layer { width: 300px; height: 100px; background: #ff80ab; border-radius: 50% / 20%; position: absolute; bottom: 0; box-shadow: 0 12px #f06292; }
+    .candle { width: 12px; height: 60px; background: #ffeb3b; position: absolute; bottom: 75px; left: 144px; border-radius: 6px; }
+    .flame { width: 18px; height: 30px; background: orange; position: absolute; bottom: 135px; left: 141px; border-radius: 50% 50% 35% 35%; animation: flicker 0.15s infinite; }
     @keyframes flicker { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0.8; } }
-    @keyframes burst { 0% { transform: scale(0.1); opacity: 0; } 50% { opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
     
-    .special-wish {
-        font-size: 22px; color: #1a237e; text-align: center; font-style: italic;
-        background: #fce4ec; padding: 25px; border-radius: 15px; margin-top: 30px;
-        border: 2px solid #ff4081;
-    }
+    .special-wish { font-size: 22px; color: #1a237e; text-align: center; font-style: italic; background: #fce4ec; padding: 25px; border-radius: 15px; margin-top: 30px; border: 2px solid #ff4081; }
     .footer { text-align: center; color: #880e4f; font-weight: bold; margin-top: 50px; padding-bottom: 20px; }
-    .stButton>button { background-color: #ff4081; color: white; font-size: 22px; font-weight: bold; border-radius: 15px; width: 100%; }
+    .stButton>button { background-color: #ff4081; color: white; font-size: 25px; font-weight: bold; border-radius: 15px; width: 100%; height: 3em; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -50,47 +50,59 @@ if diff.total_seconds() > 0:
 else:
     st.markdown('<div class="countdown-box">🎉 Today is Fariha\'s Special Day! 🎉</div>', unsafe_allow_html=True)
 
-# --- 2. MAGIC BUTTON ---
+# --- 2. AGE FUN FACT ---
+birth_date = datetime(2011, 5, 3) 
+days_alive = (now - birth_date).days
+st.markdown(f'<div class="age-fact">🌟 Fariha, you have been awesome for {days_alive:,} days! 🌟</div>', unsafe_allow_html=True)
+
+# --- 3. BALLOON BUTTON (At the Top) ---
+st.write("")
 if st.button("CLICK HEREEEEEEEEEE 🎈✨", use_container_width=True):
     with st.empty():
-        for i in range(8): 
+        for i in range(12): 
             st.balloons()
-            time.sleep(2)
+            time.sleep(2.5)
 
 st.write("---")
 
-# --- 3. 100 WISHES (Blue Title & Multi-color Text) ---
+# --- 4. 100 WISHES (Scroll Down) ---
 st.markdown('<p class="wish-title">✨ 100 Wishes For You ✨</p>', unsafe_allow_html=True)
-
 for i in range(1, 101):
-    if i % 2 != 0:
-        st.markdown(f'<p class="pink-text">{i}. Happy Birthday to you Fariha 🎂💖</p>', unsafe_allow_html=True)
-    else:
-        st.markdown(f'<p class="blue-text">{i}. Happy Birthday to you Fariha 🎂💖</p>', unsafe_allow_html=True)
+    color_class = "pink-text" if i % 2 != 0 else "blue-text"
+    st.markdown(f'<p class="{color_class}">{i}. Happy Birthday to you Fariha 🎂💖</p>', unsafe_allow_html=True)
 
 st.write("---")
 
-# --- 4. CAKE & PRANK ---
+# --- 5. 2-POUND CAKE & FOOD RAIN ---
 if "blown" not in st.session_state:
     st.session_state.blown = False
 if "prank_step" not in st.session_state:
     st.session_state.prank_step = 0
 
+st.markdown('<div class="cake-container">', unsafe_allow_html=True)
 if not st.session_state.blown:
-    # ডিজিটাল জ্বলন্ত মোমবাতিওয়ালা কেক
     st.markdown('<div class="cake"><div class="flame"></div><div class="candle"></div><div class="layer"></div></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('<p style="text-align:center; font-size:24px; color:#d81b60; font-weight:bold;">🕯️ Blow the candle to start the magic!</p>', unsafe_allow_html=True)
     if st.button("Blow the Candle! 💨"):
         st.session_state.blown = True
         st.rerun()
 else:
-    # মোমবাতি নিভে যাওয়ার পর ডিজিটাল আতশবাজি
+    # After blowing
     st.markdown('<div class="cake"><div class="candle"></div><div class="layer"></div></div>', unsafe_allow_html=True)
-    st.markdown('<div class="fireworks">🎆✨🎊✨🎆</div>', unsafe_allow_html=True)
-    st.markdown('<h1 style="text-align: center; color: #ff1493;">✨ Make a Wish! ✨</h1>', unsafe_allow_html=True)
-    st.snow()
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    # প্র্যাঙ্ক মেসেজ
+    # Firework Sound + Food Rain
+    st.components.v1.html("""<iframe width="0" height="0" src="https://youtube.com" frameborder="0" allow="autoplay"></iframe>""", height=0)
+    
+    food_emojis = ["🍫", "🍦", "🍕", "🍔", "🍟", "🍩", "🍰", "🍓", "🍗", "🍭"]
+    rain_code = "".join([f'<span style="font-size:30px; position:absolute; left:{random.randint(0,90)}%; animation: rain {random.randint(2,5)}s linear infinite;">{random.choice(food_emojis)}</span>' for _ in range(25)])
+    st.markdown(f'<div style="height:250px; position:relative; overflow:hidden;">{rain_code}</div>', unsafe_allow_html=True)
+    st.markdown('<style>@keyframes rain { 0% { top: -50px; } 100% { top: 250px; } }</style>', unsafe_allow_html=True)
+
+    st.markdown('<h1 style="text-align: center; color: #ff1493;">✨ Make a Wish! ✨</h1>', unsafe_allow_html=True)
+    
+    # Prank Messages (Step by Step)
     if st.session_state.prank_step == 0:
         if st.button("Click for the first truth! 😂"):
             st.session_state.prank_step = 1
@@ -113,13 +125,6 @@ else:
     if st.session_state.prank_step >= 3:
         st.info("পাগললললললললললললললললললললললললললললললললললললল! 🤪")
         st.success("Happy Birthday Fariha! ❤️")
-        
-        # আপনার সেই স্পেশাল ইংরেজি মেসেজটি এখন এখানে আসবে
-        st.markdown("""
-            <div class="special-wish">
-            "To the person who knows all my secrets and still likes me—Happy Birthday! 
-            I'm so lucky to have a best friend like you. Have the best day ever! 🎉"
-            </div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="special-wish">"To the person who knows all my secrets and still likes me—Happy Birthday! I\'m so lucky to have a best friend like you. Have the best day ever! 🎉"</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="footer">Made with ❤️ by your bestfriend</div>', unsafe_allow_html=True)
